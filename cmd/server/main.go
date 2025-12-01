@@ -1,6 +1,6 @@
 package main
 
-import "github.com/luis13005/apis/configs"
+import "github.com/luis13005/pos-go/configs"
 
 func main() {
 	confg := configs.LoadConfig(".")
