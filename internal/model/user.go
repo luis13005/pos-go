@@ -1,6 +1,9 @@
 package model
 
 import (
+	"errors"
+	"strings"
+
 	"github.com/luis13005/pos-go/pkg/entidade"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -12,7 +15,11 @@ type User struct {
 	Senha string      `json:"senha"`
 }
 
-func NewUser(u User) (*User, error) {
+func NewUser(u *User) (*User, error) {
+	if strings.TrimSpace(u.Senha) == "" {
+		return nil, errors.New("senha é obrigatória")
+	}
+
 	senhaHash, err := bcrypt.GenerateFromPassword([]byte(u.Senha), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, err
