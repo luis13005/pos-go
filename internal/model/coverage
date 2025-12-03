@@ -1,0 +1,23 @@
+mode: set
+github.com/luis13005/pos-go/internal/model/product.go:26.47,35.16 3 1
+github.com/luis13005/pos-go/internal/model/product.go:35.16,37.3 1 1
+github.com/luis13005/pos-go/internal/model/product.go:39.2,39.21 1 1
+github.com/luis13005/pos-go/internal/model/product.go:42.36,43.25 1 1
+github.com/luis13005/pos-go/internal/model/product.go:43.25,45.3 1 0
+github.com/luis13005/pos-go/internal/model/product.go:47.2,47.57 1 1
+github.com/luis13005/pos-go/internal/model/product.go:47.57,49.3 1 0
+github.com/luis13005/pos-go/internal/model/product.go:51.2,51.18 1 1
+github.com/luis13005/pos-go/internal/model/product.go:51.18,53.3 1 1
+github.com/luis13005/pos-go/internal/model/product.go:55.2,55.22 1 1
+github.com/luis13005/pos-go/internal/model/product.go:55.22,57.3 1 1
+github.com/luis13005/pos-go/internal/model/product.go:59.2,59.26 1 1
+github.com/luis13005/pos-go/internal/model/product.go:59.26,61.3 1 1
+github.com/luis13005/pos-go/internal/model/product.go:63.2,63.12 1 1
+github.com/luis13005/pos-go/internal/model/user.go:18.38,19.38 1 1
+github.com/luis13005/pos-go/internal/model/user.go:19.38,21.3 1 1
+github.com/luis13005/pos-go/internal/model/user.go:23.2,24.16 2 1
+github.com/luis13005/pos-go/internal/model/user.go:24.16,26.3 1 0
+github.com/luis13005/pos-go/internal/model/user.go:28.2,33.8 1 1
+github.com/luis13005/pos-go/internal/model/user.go:36.56,38.16 2 1
+github.com/luis13005/pos-go/internal/model/user.go:38.16,40.3 1 1
+github.com/luis13005/pos-go/internal/model/user.go:42.2,42.18 1 1

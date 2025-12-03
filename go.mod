@@ -5,10 +5,12 @@ go 1.24.4
 require (
 	github.com/go-chi/jwtauth v1.2.0
 	github.com/google/uuid v1.6.0
+	github.com/jinzhu/gorm v1.9.16
 	github.com/shopspring/decimal v1.4.0
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad
+	gorm.io/gorm v1.31.1
 )
 
 require (
@@ -16,6 +18,8 @@ require (
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/goccy/go-json v0.3.5 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/lestrrat-go/backoff/v2 v2.0.7 // indirect
 	github.com/lestrrat-go/httpcc v1.0.0 // indirect
 	github.com/lestrrat-go/iter v1.0.0 // indirect

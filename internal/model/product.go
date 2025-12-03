@@ -23,7 +23,7 @@ type Product struct {
 	CreatedAt string          `json:"created_at"`
 }
 
-func NewProduct(p Product) (*Product, error) {
+func NewProduct(p *Product) (*Product, error) {
 	produto := &Product{
 		ID:        entidade.NewId(),
 		Nome:      p.Nome,
@@ -52,7 +52,7 @@ func (p *Product) Validate() error {
 		return ErrNameIsRequired
 	}
 
-	if p.Preco == decimal.NewFromInt(0) {
+	if p.Preco.IsZero() {
 		return ErrPriceIsRequired
 	}
 
