@@ -1,0 +1,8 @@
+mode: set
+github.com/luis13005/pos-go/internal/infra/database/user_database.go:12.37,14.2 1 1
+github.com/luis13005/pos-go/internal/infra/database/user_database.go:16.68,18.16 2 1
+github.com/luis13005/pos-go/internal/infra/database/user_database.go:18.16,20.3 1 0
+github.com/luis13005/pos-go/internal/infra/database/user_database.go:22.2,22.18 1 1
+github.com/luis13005/pos-go/internal/infra/database/user_database.go:25.64,27.77 2 1
+github.com/luis13005/pos-go/internal/infra/database/user_database.go:27.77,29.3 1 1
+github.com/luis13005/pos-go/internal/infra/database/user_database.go:31.2,31.22 1 1
