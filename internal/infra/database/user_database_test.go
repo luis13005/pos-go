@@ -23,11 +23,13 @@ func TestCreateUser(t *testing.T) {
 
 	db.AutoMigrate(&model.User{})
 	userDB := NewUserDB(db)
+	user, err := model.NewUser(entrada)
 
-	usuario, err := userDB.CreateUser(entrada)
+	assert.NoError(t, err)
+	usuario, err := userDB.CreateUser(user)
 
-	assert.Nil(t, err)
-	assert.NotNil(t, usuario)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, usuario.ID)
 }
 
 func TestFindByEmail(t *testing.T) {
@@ -51,11 +53,11 @@ func TestFindByEmail(t *testing.T) {
 
 	userByEmail, err := userDb.FindByEmail("teste@teste.com")
 
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 	assert.NotNil(t, userByEmail)
 
 	userByEmail, err = userDb.FindByEmail("tes@tee.com")
 
-	assert.Nil(t, err)
-	assert.NotNil(t, userByEmail)
+	assert.NotNil(t, err)
+	assert.Nil(t, userByEmail)
 }

@@ -13,16 +13,16 @@ func NewProductDB(db *gorm.DB) *ProductDB {
 	return &ProductDB{db}
 }
 
-func (productDb *ProductDB) CreateProduct(p *model.Product) error {
+func (productDB *ProductDB) CreateProduct(p *model.Product) error {
 
-	if err := productDb.DB.Create(p).Error; err != nil {
+	if err := productDB.DB.Create(p).Error; err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (productDb *ProductDB) FindAll(page, limit int, sort string) ([]model.Product, error) {
+func (productDB *ProductDB) FindAll(page, limit int, sort string) ([]model.Product, error) {
 	var products []model.Product
 	var err error
 
@@ -31,15 +31,41 @@ func (productDb *ProductDB) FindAll(page, limit int, sort string) ([]model.Produ
 	}
 
 	if page != 0 && limit != 0 {
-		err = productDb.DB.Limit(limit).Offset((page - 1) * limit).Order("Nome " + sort).Find(&products).Error
+		err = productDB.DB.Limit(limit).Offset((page - 1) * limit).Order("Nome " + sort).Find(&products).Error
 	} else {
-		err = productDb.DB.Order("Nome " + sort).Find(&products).Error
+		err = productDB.DB.Order("Nome " + sort).Find(&products).Error
 	}
 
 	return products, err
 }
 
-// FindAll(page, limit int, sort string) ([]model.Product, error)
-// FindById(id string) (*model.Product, error)
-// Update(product *model.Product) error
-// Delete(id string) error
+func (productDB *ProductDB) FindById(id string) (*model.Product, error) {
+	var product model.Product
+
+	err := productDB.DB.Where("id = ?", id).First(&product).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &product, nil
+}
+
+func (productDB *ProductDB) Update(product *model.Product) error {
+	_, err := productDB.FindById(product.ID.String())
+
+	if err != nil {
+		return err
+	}
+
+	return productDB.DB.Save(product).Error
+}
+
+func (productDB *ProductDB) Delete(id string) error {
+	product, err := productDB.FindById(id)
+	if err != nil {
+		return err
+	}
+
+	return productDB.DB.Delete(product).Error
+}
