@@ -62,27 +62,63 @@ func TestFindAll(t *testing.T) {
 	assert.NotNil(t, products)
 }
 
-// func (productDB *ProductDB) FindById(id string) (*model.Product, error) {
-// 	var product model.Product
-
-// 	err := productDB.DB.Where("id = ?", id).First(&product).Error
-
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	return &product, nil
-// }
-
 func TestFindById(t *testing.T) {
-	// entrada := &model.Product{
-	// 	Nome:  "NOTEBOOK",
-	// 	Preco: decimal.NewFromFloat(2500.50),
-	// }
+	entrada := &model.Product{
+		Nome:  "NOTEBOOK",
+		Preco: decimal.NewFromFloat(2500.50),
+	}
 
 	db, err := gorm.Open(sqlite.Open("file::momery:"), &gorm.Config{})
 	assert.Nil(t, err)
 
 	db.AutoMigrate(&model.Product{})
 
+	productDB := NewProductDB(db)
+	product, err := model.NewProduct(entrada)
+	assert.NoError(t, err)
+
+	err = productDB.CreateProduct(product)
+	assert.NoError(t, err)
+
+	produtoAchado, err := productDB.FindById(product.ID.String())
+
+	assert.NoError(t, err)
+	assert.Equal(t, product.ID, produtoAchado.ID)
+}
+
+func TestUpdate(t *testing.T) {
+	entrada := &model.Product{
+		Nome:  "NOTEBOOK",
+		Preco: decimal.NewFromFloat(2500.50),
+	}
+	db, err := gorm.Open(sqlite.Open("file::momery:"), &gorm.Config{})
+	assert.NoError(t, err)
+	db.AutoMigrate(&model.Product{})
+
+	productDB := NewProductDB(db)
+	product, err := model.NewProduct(entrada)
+	assert.NoError(t, err)
+	err = productDB.CreateProduct(product)
+	assert.NoError(t, err)
+
+	product.Nome = "PC Gamer"
+	err = productDB.Update(product)
+	assert.NoError(t, err)
+}
+
+func TestDelete(t *testing.T) {
+	entrada := &model.Product{
+		Nome:  "NOTEBOOK",
+		Preco: decimal.NewFromFloat(2500.50),
+	}
+	db, err := gorm.Open(sqlite.Open("file::momery:"), &gorm.Config{})
+	assert.NoError(t, err)
+	db.AutoMigrate(&model.Product{})
+	productDB := NewProductDB(db)
+	product, err := model.NewProduct(entrada)
+	assert.NoError(t, err)
+	err = productDB.CreateProduct(product)
+	assert.NoError(t, err)
+	err = productDB.Delete(product.ID.String())
+	assert.NoError(t, err)
 }
