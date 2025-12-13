@@ -68,8 +68,8 @@ func TestFindById(t *testing.T) {
 		Preco: decimal.NewFromFloat(2500.50),
 	}
 
-	db, err := gorm.Open(sqlite.Open("file::momery:"), &gorm.Config{})
-	assert.Nil(t, err)
+	db, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	assert.NoError(t, err)
 
 	db.AutoMigrate(&model.Product{})
 
@@ -91,7 +91,7 @@ func TestUpdate(t *testing.T) {
 		Nome:  "NOTEBOOK",
 		Preco: decimal.NewFromFloat(2500.50),
 	}
-	db, err := gorm.Open(sqlite.Open("file::momery:"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 	assert.NoError(t, err)
 	db.AutoMigrate(&model.Product{})
 
@@ -111,7 +111,7 @@ func TestDelete(t *testing.T) {
 		Nome:  "NOTEBOOK",
 		Preco: decimal.NewFromFloat(2500.50),
 	}
-	db, err := gorm.Open(sqlite.Open("file::momery:"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 	assert.NoError(t, err)
 	db.AutoMigrate(&model.Product{})
 	productDB := NewProductDB(db)
