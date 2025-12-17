@@ -3,6 +3,7 @@ module github.com/luis13005/pos-go
 go 1.24.4
 
 require (
+	github.com/go-chi/chi v1.5.5
 	github.com/go-chi/jwtauth v1.2.0
 	github.com/google/uuid v1.6.0
 	github.com/shopspring/decimal v1.4.0
