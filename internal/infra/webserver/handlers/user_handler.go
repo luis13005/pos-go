@@ -79,9 +79,9 @@ func (h *UserHandler) GetJWT(w http.ResponseWriter, r *http.Request) {
 	})
 
 	accessToken := struct {
-		AccesToken string `json"access_token"`
+		AccessToken string `json:"access_token"`
 	}{
-		AccesToken: tokenString,
+		AccessToken: tokenString,
 	}
 
 	w.Header().Set("Content-Type", "application-json")
