@@ -21,11 +21,11 @@ func main() {
 		panic(err)
 	}
 	db.AutoMigrate(&model.User{}, &model.Product{})
-	fmt.Println(configs)
+	fmt.Println("rodando na porta 8000")
 	productDb := database.NewProductDB(db)
 	userDB := database.NewUserDB(db)
 	productHandler := handlers.NewProductHandler(productDb)
-	userHandler := handlers.NewUserHandler(userDB)
+	userHandler := handlers.NewUserHandler(userDB, configs.TokenAuth, configs.JwtExpiresIn)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
@@ -36,5 +36,7 @@ func main() {
 	r.Delete("/product/{id}", productHandler.DelteProduct)
 
 	r.Post("/user", userHandler.CreateUser)
+	r.Get("/user", userHandler.FindUserByEmail)
+	r.Get("/user/token", userHandler.GetJWT)
 	http.ListenAndServe(":8000", r)
 }

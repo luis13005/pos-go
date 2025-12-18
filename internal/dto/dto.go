@@ -1,12 +1,17 @@
 package dto
 
-type ProductDto struct {
-	Nome  string
-	Preco float32
+type CreateProductDto struct {
+	Nome  string  `json:"name"`
+	Preco float32 `json:"preco"`
 }
 
-type UserDto struct {
-	Nome  string
-	Email string
-	Senha string
+type GetJWT struct {
+	Email string `json:"email"`
+	Senha string `json:"senha"`
+}
+
+type CreateUserDto struct {
+	Nome  string `json:"nome"`
+	Email string `json:"email"`
+	Senha string `json:"senha"`
 }
