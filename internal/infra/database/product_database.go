@@ -52,12 +52,6 @@ func (productDB *ProductDB) FindById(id string) (*model.Product, error) {
 }
 
 func (productDB *ProductDB) Update(product *model.Product) error {
-	_, err := productDB.FindById(product.ID.String())
-
-	if err != nil {
-		return err
-	}
-
 	return productDB.DB.Save(product).Error
 }
 
