@@ -1,0 +1,16 @@
+basePath: /
+host: localhost:8000
+info:
+  contact:
+    name: Luís Fernando Pinto
+  description: API com autenticação JWT
+  termsOfService: http://swagger.io/terms/
+  title: Pós Go Expert
+  version: "1.0"
+paths: {}
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

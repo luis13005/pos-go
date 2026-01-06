@@ -19,12 +19,20 @@ type UserHandler struct {
 
 func NewUserHandler(db database.UserInterface, jwt *jwtauth.JWTAuth, jwtExpiresIn int) *UserHandler {
 	return &UserHandler{
-		UserDB:       db,
-		Jwt:          jwt,
-		JwtExpiresIn: jwtExpiresIn,
+		UserDB: db,
 	}
 }
 
+// Create user godoc
+// @Sumary Create user
+// @Description Create user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param request body dto.CreateUserDto true "user request"
+// @Success 201
+// @Failure 	500 	{object} 	error
+// @Router /user [post]
 func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var user dto.CreateUserDto
 	json.NewDecoder(r.Body).Decode(&user)
@@ -46,7 +54,19 @@ func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
+// GetJWT godoc
+// @Sumary Get a user JWT
+// @Description Get a user JWT
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param request body dto.GetJWT true "user credentials"
+// @Success 200 {object} dto.GetJWTOutput
+// @Failure 	500 	{object} 	error
+// @Router /user/token [post]
 func (h *UserHandler) GetJWT(w http.ResponseWriter, r *http.Request) {
+	jwtauth := r.Context().Value("jwt").(*jwtauth.JWTAuth)
+	expiresIn := r.Context().Value("expiresIn").(int)
 	var user dto.GetJWT
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
@@ -73,16 +93,12 @@ func (h *UserHandler) GetJWT(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, tokenString, _ := h.Jwt.Encode(map[string]interface{}{
+	_, tokenString, _ := jwtauth.Encode(map[string]interface{}{
 		"sub": usuarioEncontrado.ID.String(),
-		"exp": time.Now().Add(time.Second * time.Duration(h.JwtExpiresIn)).Unix(),
+		"exp": time.Now().Add(time.Second * time.Duration(expiresIn)).Unix(),
 	})
 
-	accessToken := struct {
-		AccessToken string `json:"access_token"`
-	}{
-		AccessToken: tokenString,
-	}
+	accessToken := dto.GetJWTOutput{AccessToken: tokenString}
 
 	w.Header().Set("Content-Type", "application-json")
 	w.WriteHeader(http.StatusOK)
