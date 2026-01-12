@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi"
+	_ "github.com/luis13005/pos-go/docs"
 	"github.com/luis13005/pos-go/internal/dto"
 	"github.com/luis13005/pos-go/internal/infra/database"
 	"github.com/luis13005/pos-go/internal/model"
