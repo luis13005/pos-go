@@ -1,10 +1,12 @@
 package events
 
 import (
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -30,8 +32,7 @@ type TestEventHandler struct {
 	ID int
 }
 
-func (h *TestEventHandler) Handle(event Event) {
-
+func (h *TestEventHandler) Handle(event Event, wg *sync.WaitGroup) {
 }
 
 type EventDispatcherTestSuite struct {
@@ -114,6 +115,67 @@ func (suite *EventDispatcherTestSuite) TestEventDispatcher_Has() {
 	assert.True(suite.T(), suite.EventDispatcher.Has(suite.event.GetName(), &suite.handler))
 	assert.True(suite.T(), suite.EventDispatcher.Has(suite.event.GetName(), &suite.handler2))
 	assert.False(suite.T(), suite.EventDispatcher.Has(suite.event.GetName(), &suite.handler3))
+}
+
+func (suite *EventDispatcherTestSuite) TestEventDispatcher_Remove() {
+	suite.SetUpTest()
+	err := suite.EventDispatcher.Register(suite.event.GetName(), &suite.handler)
+	suite.Nil(err)
+	suite.Equal(1, len(suite.EventDispatcher.handlers[suite.event.GetName()]))
+
+	err = suite.EventDispatcher.Register(suite.event.GetName(), &suite.handler2)
+	suite.Nil(err)
+	suite.Equal(2, len(suite.EventDispatcher.handlers[suite.event.GetName()]))
+
+	err = suite.EventDispatcher.Register(suite.event2.GetName(), &suite.handler3)
+	suite.Nil(err)
+	suite.Equal(1, len(suite.EventDispatcher.handlers[suite.event2.GetName()]))
+
+	suite.EventDispatcher.Remove(suite.event.GetName(), &suite.handler2)
+	suite.Equal(1, len(suite.EventDispatcher.handlers[suite.event.GetName()]))
+	assert.Equal(suite.T(), &suite.handler, suite.EventDispatcher.handlers[suite.event.GetName()][0])
+
+	suite.EventDispatcher.Remove(suite.event.GetName(), &suite.handler)
+	suite.Equal(0, len(suite.EventDispatcher.handlers[suite.event.GetName()]))
+
+	suite.EventDispatcher.Remove(suite.event2.GetName(), &suite.handler3)
+	suite.Equal(0, len(suite.EventDispatcher.handlers[suite.event2.GetName()]))
+}
+
+type MockHandler struct {
+	mock.Mock
+}
+
+func (m *MockHandler) Handle(event Event, wg *sync.WaitGroup) {
+	m.Called(event)
+	wg.Done()
+}
+
+func (suite *EventDispatcherTestSuite) TestEventDispatch_Dispatch() {
+	suite.SetUpTest()
+	eh := &MockHandler{}
+	eh.On("Handle", &suite.event)
+
+	eh2 := &MockHandler{}
+	eh2.On("Handle", &suite.event2)
+
+	eh3 := &MockHandler{}
+	eh3.On("Handle", &suite.event2)
+
+	suite.EventDispatcher.Register(suite.event.GetName(), eh)
+	suite.EventDispatcher.Register(suite.event2.GetName(), eh2)
+	suite.EventDispatcher.Register(suite.event2.GetName(), eh3)
+
+	suite.EventDispatcher.Dispatch(&suite.event)
+	suite.EventDispatcher.Dispatch(&suite.event2)
+
+	eh.AssertExpectations(suite.T())
+	eh2.AssertExpectations(suite.T())
+	eh3.AssertExpectations(suite.T())
+
+	eh.AssertNumberOfCalls(suite.T(), "Handle", 1)
+	eh2.AssertNumberOfCalls(suite.T(), "Handle", 1)
+	eh3.AssertNumberOfCalls(suite.T(), "Handle", 1)
 }
 
 func TestSuit(t *testing.T) {
